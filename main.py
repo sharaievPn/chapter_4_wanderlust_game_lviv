@@ -101,6 +101,9 @@ def play():
     enemies = [lotr,
                zbui,
                batar]
+    enemies_to_hint = [lotr,
+                       zbui,
+                       batar]
     # persons initialized
 
     # initialize items
@@ -256,18 +259,25 @@ def play():
 
                         if inhabitant.make_treatment(treat_with):
                             # What happens if you treated correctly?
-                            print("Hooray, here is your hint!")
                             if len(enemies) > 0:
-                                print(f'To defeat {enemies[0].name} '
-                                      f'you need {enemies[0].weakness}')
+                                print("Hooray, here is your hint!")
+                                if enemies[0] in enemies_to_hint:
+                                    enemies_to_hint.remove(enemies[0])
+                                    print(f'To defeat {enemies[0].name} '
+                                          f'you need {enemies[0].weakness}')
+                                    current_street.character = None
+                                else:
+                                    print(f'To defeat {enemies_to_hint[0].name} '
+                                          f'you need {enemies_to_hint[0].weakness}')
+                                    enemies_to_hint = enemies_to_hint[1:]
+                                    current_street.character = None
                             else:
-                                print('Hooray, you defeated all enemies!')
-                            current_street.character = None
+                                print("Your friend is happy now!")
+                                current_street.character = None
                         else:
                             # What happens if you lose?
-                            print("Oh dear, you lost the fight.")
-                            print("That's the end of the game")
-                            dead = True
+                            print("Your friend doesn't need that")
+                            continue
                     else:
                         if treat_with[0] in 'aeiou':
                             print("You don't have an " + treat_with)
